@@ -1,0 +1,8 @@
+langchain-openai
+python-dotenv
+pydantic
+browser-use
+websockets
+trafilatura 
+lxml
+lxml_html_clean

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Chrome
+Comment=Open Chrome with custom URL
+Exec=google-chrome-stable --no-sandbox
+Icon=google-chrome
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;

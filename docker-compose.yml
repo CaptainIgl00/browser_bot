@@ -1,0 +1,24 @@
+services:
+  browser-bot:
+    build:
+      context: .
+      dockerfile: image/Dockerfile
+    ports:
+      - "8080:8080"  # HTTP server
+      - "8501:8501"  # WebSocket logs
+      - "6080:6080"  # noVNC
+    environment:
+      - DISPLAY_NUM=1
+      - HEIGHT=900
+      - WIDTH=1600
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    volumes:
+      - type: bind
+        source: ./src
+        target: /home/computeruse/src
+    shm_size: '2gb'  # Important for Chrome stability
+    cap_add:
+      - SYS_ADMIN  # Required for Chrome in Docker
+    security_opt:
+      - seccomp=unconfined  # Required for Chrome in Docker
+    init: true  # Better process handling 
