@@ -12,6 +12,8 @@ services:
       - HEIGHT=900
       - WIDTH=1600
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - ANONYMIZED_TELEMETRY
+      - BROWSER_USE_LOGGING_LEVEL
     volumes:
       - type: bind
         source: ./src
