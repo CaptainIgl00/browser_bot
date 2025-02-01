@@ -14,13 +14,26 @@ services:
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
       - ANONYMIZED_TELEMETRY
       - BROWSER_USE_LOGGING_LEVEL
+      - HTTPS_PROXY
+      - NO_PROXY=localhost,127.0.0.1
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     volumes:
       - type: bind
         source: ./src
         target: /home/computeruse/src
+      - type: volume
+        source: chrome_data
+        target: /home/computeruse/.config/chrome-data
+      - /etc/ssl/certs:/etc/ssl/certs:ro
     shm_size: '2gb'  # Important for Chrome stability
     cap_add:
       - SYS_ADMIN  # Required for Chrome in Docker
     security_opt:
       - seccomp=unconfined  # Required for Chrome in Docker
+    dns:
+      - 8.8.8.8  # Google DNS
+      - 1.1.1.1  # Cloudflare DNS
     init: true  # Better process handling 
+
+volumes:
+  chrome_data:  # Volume persistant pour les données Chrome 

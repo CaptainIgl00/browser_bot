@@ -17,7 +17,7 @@ This project aims at running an agent that can browse the web and perform action
 
 1. Clone the repository:
    ```bash
-   git clone 
+   git clone https://github.com/CaptainIgl00/browser_bot.git
    ```
 
 2. Navigate to the project directory:

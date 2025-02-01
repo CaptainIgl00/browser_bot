@@ -22,11 +22,11 @@ google-chrome-stable \
 
 sleep 2  # Wait for Chrome to start
 
-# Start the log server
-python src/log_server.py &
+# # Start the log server
+# python src/log_server.py &
 
-# Start the main script
-python src/main.py
+# # Start the main script
+# python src/main.py
 
 echo "✨ Browser Bot is ready!"
 echo "➡️  Open http://localhost:8080 in your browser to begin"
