@@ -25,10 +25,10 @@ This project aims at running an agent that can browse the web and perform action
    cd browser_bot
    ```
 
-3. Add your DeepSeek API key to the `.env` file.
+3. Add your OpenAI API key to the `.env` file.
 
     ```bash
-    DEEPSEEK_API_KEY=your_api_key
+    OPENAI_API_KEY=your_api_key
     ```
 
 4. Launch Docker Compose:
@@ -37,6 +37,22 @@ This project aims at running an agent that can browse the web and perform action
    ```
 
 5. Access the VNC interface via `http://localhost:8080`.
+
+6. Connect to your instagram account.
+
+7. Scrape instagram posts with the `trigger-scrape` endpoint.
+
+```bash
+curl -X POST http://localhost:8000/trigger-scrape
+```
+
+8. Get the latest posts with the `posts` endpoint.
+
+```bash
+curl http://localhost:8000/posts
+```
+
+9. Get the scraping history with the `history` endpoint.
 
 ## License
 

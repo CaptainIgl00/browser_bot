@@ -6,3 +6,5 @@ websockets
 trafilatura 
 lxml
 lxml_html_clean
+fastapi
+uvicorn

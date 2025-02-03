@@ -7,11 +7,12 @@ services:
       - "8080:8080"  # HTTP server
       - "8501:8501"  # WebSocket logs
       - "6080:6080"  # noVNC
+      - "8000:8000"  # FastAPI server
     environment:
       - DISPLAY_NUM=1
       - HEIGHT=900
       - WIDTH=1600
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - OPENAI_API_KEY
       - ANONYMIZED_TELEMETRY
       - BROWSER_USE_LOGGING_LEVEL
       - HTTPS_PROXY
