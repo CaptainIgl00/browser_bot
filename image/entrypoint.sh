@@ -25,15 +25,20 @@ sleep 2  # Wait for Chrome to start
 
 # Create logs directory if it doesn't exist
 mkdir -p $HOME/logs
+mkdir -p $HOME/static/images
 
 # Start the API using the Python from pyenv with logging
 $HOME/.pyenv/versions/$PYENV_VERSION/bin/python -m uvicorn src.api:app --host 0.0.0.0 --port 8000 --log-level debug --reload > $HOME/logs/uvicorn.log 2>&1 &
+
+# Start the scheduler
+$HOME/.pyenv/versions/$PYENV_VERSION/bin/python src/scheduler.py > $HOME/logs/scheduler.log 2>&1 &
 
 echo "✨ Browser Bot is ready!"
 echo "➡️  Open http://localhost:8080 in your browser to begin"
 echo "📝 Logs available in:"
 echo "   - API logs: $HOME/logs/uvicorn.log"
 echo "   - Scraper logs: $HOME/scraper.log"
+echo "   - Scheduler logs: $HOME/logs/scheduler.log"
 
-# Keep the container running
-tail -f $HOME/logs/uvicorn.log
+# Keep the container running and show logs
+tail -f $HOME/logs/*.log

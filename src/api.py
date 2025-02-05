@@ -1,9 +1,12 @@
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 from src.scrapper import scrape_instagram, InstagramPosts
 from src.database import Database
+from src.config import settings
 import logging
 
 # Configure logging
@@ -19,8 +22,20 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Instagram Scraper API")
 
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount the static directory for serving images
+app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
+
 # Initialize database
-db = Database()
+db = Database(db_path=settings.DB_PATH, images_dir=settings.IMAGES_DIR)
 
 class ScrapeStatus(BaseModel):
     status: str
@@ -59,7 +74,7 @@ async def run_scraping():
             current_status.last_result = result
             # Save posts to database
             logger.debug(f"Saving {len(result.posts)} posts to database")
-            db.save_posts(result)
+            await db.save_posts(result)
             # Log success
             db.log_scraping("completed")
         else:
@@ -109,7 +124,7 @@ async def get_status():
 async def get_posts(limit: int = 10):
     """Get the latest posts from the database"""
     posts = db.get_latest_posts(limit)
-    return {"posts": [post.model_dump() for post in posts]}
+    return {"posts": posts}
 
 @app.get("/history")
 async def get_history(limit: int = 10):

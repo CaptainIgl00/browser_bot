@@ -48,10 +48,14 @@ async def create_agent() -> Agent:
     
     return Agent(
         task = (
-            "In instagram, search for the account 'brasserie chez ju' and scroll down to load recent posts. "
-            f"You need to find the last posts that involve content about events to come or already happening (today date is {datetime.now().strftime('%d/%m/%Y')}). "
-            "Extract the URLs of these posts along with the URLs of their associated images, the title of the post and a synthetized description (for the disabled users) in FRENCH. "
-            "Return the data in a JSON format that matches the InstagramPosts Pydantic model structure."
+            "Sur Instagram, recherchez le compte 'brasserie chez ju', allez sur la page et faites défiler vers le bas pour charger les publications récentes. "
+            f"Vous devez trouver les dernières publications qui concernent les événements à venir (date d'aujourd'hui : {datetime.now().strftime('%d/%m/%Y')}). "
+            "Vous devez sélectionner entre 3 publications. L'une d'entre elles doit être le 'Menu de la semaine' de la semaine en cours (Ne retournez pas plus d'une publication pour le menu de la semaine) "
+            "Les posts les plus importants sont ceux qui parlent d'événements à venir, de menus spéciaux, etc. (ex: Menu saint valentin)"
+            "Cliquez sur chacune des premières publications intéressantes pour consulter leur description (notamment la date concernée). "
+            "Extrayez les URLs de ces publications ainsi que les URLs de leurs images associées, le titre de la publication et une description synthétisée en FRANÇAIS. "
+            "Le titre doit être identique au titre de la publication. La description correspondra au texte alternatif de l'image. "
+            "Retournez les données au format JSON correspondant à la structure du modèle Pydantic InstagramPosts."
         ),
         initial_actions=INITIAL_ACTIONS,
         llm=ChatOpenAI(
