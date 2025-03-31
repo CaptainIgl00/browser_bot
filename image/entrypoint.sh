@@ -2,10 +2,11 @@
 set -e
 
 export DISPLAY=:${DISPLAY_NUM}
+# Add the home directory to PYTHONPATH so Python can find the src module
+export PYTHONPATH=$HOME:$PYTHONPATH
+
 ./start_all.sh
 ./novnc_startup.sh
-
-python http_server.py > /tmp/server_logs.txt 2>&1 &
 
 # Start Chrome in debug mode
 google-chrome-stable \
@@ -22,14 +23,22 @@ google-chrome-stable \
 
 sleep 2  # Wait for Chrome to start
 
-# # Start the log server
-# python src/log_server.py &
+# Create logs directory if it doesn't exist
+mkdir -p $HOME/logs
+mkdir -p $HOME/static/images
 
-# # Start the main script
-# python src/main.py
+# Start the API using the Python from pyenv with logging
+$HOME/.pyenv/versions/$PYENV_VERSION/bin/python -m uvicorn src.api:app --host 0.0.0.0 --port 8000 --log-level debug --reload > $HOME/logs/uvicorn.log 2>&1 &
+
+# Start the scheduler
+$HOME/.pyenv/versions/$PYENV_VERSION/bin/python src/scheduler.py > $HOME/logs/scheduler.log 2>&1 &
 
 echo "✨ Browser Bot is ready!"
 echo "➡️  Open http://localhost:8080 in your browser to begin"
+echo "📝 Logs available in:"
+echo "   - API logs: $HOME/logs/uvicorn.log"
+echo "   - Scraper logs: $HOME/scraper.log"
+echo "   - Scheduler logs: $HOME/logs/scheduler.log"
 
-# Keep the container running
-tail -f /dev/null
+# Keep the container running and show logs
+tail -f $HOME/logs/*.log
